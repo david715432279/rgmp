@@ -3,10 +3,8 @@
 uint8 cmd 									
 #different cmd have different id_msg
 string name                                 
-#consecutively increasing ID
-uint32 id
-#the tiem about the msg
-time  stamp                                 
+#header
+Header header
 #the data length about the data
 uint8   length                           
 #msg data

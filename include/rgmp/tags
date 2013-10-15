@@ -1,0 +1,99 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.6	//
+ConstPtr	Pos.h	/^  typedef boost::shared_ptr< ::rgmp::Pos_<ContainerAllocator>  const> ConstPtr;$/;"	t	struct:rgmp::Pos_	access:public
+DataType	Pos.h	/^struct DataType< ::rgmp::Pos_<ContainerAllocator> > {$/;"	s	namespace:ros::message_traits
+Definition	Pos.h	/^struct Definition< ::rgmp::Pos_<ContainerAllocator> > {$/;"	s	namespace:ros::message_traits
+IsFixedSize	Pos.h	/^template<class ContainerAllocator> struct IsFixedSize< ::rgmp::Pos_<ContainerAllocator> > : public TrueType {};$/;"	s	namespace:ros::message_traits	inherits:TrueType
+IsMessage	Pos.h	/^template<class ContainerAllocator> struct IsMessage< ::rgmp::Pos_<ContainerAllocator>  const> : public TrueType {};$/;"	s	namespace:ros::message_traits	inherits:TrueType
+IsMessage	Pos.h	/^template<class ContainerAllocator> struct IsMessage< ::rgmp::Pos_<ContainerAllocator> > : public TrueType {};$/;"	s	namespace:ros::message_traits	inherits:TrueType
+MD5Sum	Pos.h	/^struct MD5Sum< ::rgmp::Pos_<ContainerAllocator> > {$/;"	s	namespace:ros::message_traits
+Pos	Pos.h	/^typedef  ::rgmp::Pos_<std::allocator<void> > Pos;$/;"	t	namespace:rgmp
+PosConstPtr	Pos.h	/^typedef boost::shared_ptr< ::rgmp::Pos const> PosConstPtr;$/;"	t	namespace:rgmp
+PosPtr	Pos.h	/^typedef boost::shared_ptr< ::rgmp::Pos> PosPtr;$/;"	t	namespace:rgmp
+Pos_	Pos.h	/^  Pos_()$/;"	f	struct:rgmp::Pos_	access:public	signature:()
+Pos_	Pos.h	/^  Pos_(const ContainerAllocator& _alloc)$/;"	f	struct:rgmp::Pos_	access:public	signature:(const ContainerAllocator& _alloc)
+Pos_	Pos.h	/^struct Pos_ {$/;"	s	namespace:rgmp
+Printer	Pos.h	/^struct Printer< ::rgmp::Pos_<ContainerAllocator> >$/;"	s	namespace:ros::message_operations
+Ptr	Pos.h	/^  typedef boost::shared_ptr< ::rgmp::Pos_<ContainerAllocator> > Ptr;$/;"	t	struct:rgmp::Pos_	access:public
+RGMP_MESSAGE_POS_H	Pos.h	3;"	d
+ROS_DECLARE_ALLINONE_SERIALIZER	Pos.h	/^  ROS_DECLARE_ALLINONE_SERIALIZER;$/;"	m	struct:ros::serialization::Serializer	access:public
+Serializer	Pos.h	/^template<class ContainerAllocator> struct Serializer< ::rgmp::Pos_<ContainerAllocator> >$/;"	s	namespace:ros::serialization
+Type	Pos.h	/^  typedef Pos_<ContainerAllocator> Type;$/;"	t	struct:rgmp::Pos_	access:public
+__connection_header	Pos.h	/^  boost::shared_ptr<std::map<std::string, std::string> > __connection_header;$/;"	m	struct:rgmp::Pos_	access:public
+_joint1_type	Pos.h	/^  typedef float _joint1_type;$/;"	t	struct:rgmp::Pos_	access:public
+_joint2_type	Pos.h	/^  typedef float _joint2_type;$/;"	t	struct:rgmp::Pos_	access:public
+_joint3_type	Pos.h	/^  typedef float _joint3_type;$/;"	t	struct:rgmp::Pos_	access:public
+_joint4_type	Pos.h	/^  typedef float _joint4_type;$/;"	t	struct:rgmp::Pos_	access:public
+_joint5_type	Pos.h	/^  typedef float _joint5_type;$/;"	t	struct:rgmp::Pos_	access:public
+_joint6_type	Pos.h	/^  typedef float _joint6_type;$/;"	t	struct:rgmp::Pos_	access:public
+allInOne	Pos.h	/^  template<typename Stream, typename T> inline static void allInOne(Stream& stream, T m)$/;"	f	struct:ros::serialization::Serializer	access:public	signature:(Stream& stream, T m)
+joint1	Pos.h	/^  float joint1;$/;"	m	struct:rgmp::Pos_	access:public
+joint2	Pos.h	/^  float joint2;$/;"	m	struct:rgmp::Pos_	access:public
+joint3	Pos.h	/^  float joint3;$/;"	m	struct:rgmp::Pos_	access:public
+joint4	Pos.h	/^  float joint4;$/;"	m	struct:rgmp::Pos_	access:public
+joint5	Pos.h	/^  float joint5;$/;"	m	struct:rgmp::Pos_	access:public
+joint6	Pos.h	/^  float joint6;$/;"	m	struct:rgmp::Pos_	access:public
+message_operations	Pos.h	/^namespace message_operations$/;"	n	namespace:ros
+message_traits	Pos.h	/^namespace message_traits$/;"	n	namespace:ros
+operator <<	Pos.h	/^std::ostream& operator<<(std::ostream& s, const  ::rgmp::Pos_<ContainerAllocator> & v)$/;"	f	namespace:rgmp	signature:(std::ostream& s, const ::rgmp::Pos_<ContainerAllocator> & v)
+rgmp	Pos.h	/^namespace rgmp$/;"	n
+rgmp::Pos	Pos.h	/^typedef  ::rgmp::Pos_<std::allocator<void> > Pos;$/;"	t	namespace:rgmp
+rgmp::PosConstPtr	Pos.h	/^typedef boost::shared_ptr< ::rgmp::Pos const> PosConstPtr;$/;"	t	namespace:rgmp
+rgmp::PosPtr	Pos.h	/^typedef boost::shared_ptr< ::rgmp::Pos> PosPtr;$/;"	t	namespace:rgmp
+rgmp::Pos_	Pos.h	/^struct Pos_ {$/;"	s	namespace:rgmp
+rgmp::Pos_::ConstPtr	Pos.h	/^  typedef boost::shared_ptr< ::rgmp::Pos_<ContainerAllocator>  const> ConstPtr;$/;"	t	struct:rgmp::Pos_	access:public
+rgmp::Pos_::Pos_	Pos.h	/^  Pos_()$/;"	f	struct:rgmp::Pos_	access:public	signature:()
+rgmp::Pos_::Pos_	Pos.h	/^  Pos_(const ContainerAllocator& _alloc)$/;"	f	struct:rgmp::Pos_	access:public	signature:(const ContainerAllocator& _alloc)
+rgmp::Pos_::Ptr	Pos.h	/^  typedef boost::shared_ptr< ::rgmp::Pos_<ContainerAllocator> > Ptr;$/;"	t	struct:rgmp::Pos_	access:public
+rgmp::Pos_::Type	Pos.h	/^  typedef Pos_<ContainerAllocator> Type;$/;"	t	struct:rgmp::Pos_	access:public
+rgmp::Pos_::__connection_header	Pos.h	/^  boost::shared_ptr<std::map<std::string, std::string> > __connection_header;$/;"	m	struct:rgmp::Pos_	access:public
+rgmp::Pos_::_joint1_type	Pos.h	/^  typedef float _joint1_type;$/;"	t	struct:rgmp::Pos_	access:public
+rgmp::Pos_::_joint2_type	Pos.h	/^  typedef float _joint2_type;$/;"	t	struct:rgmp::Pos_	access:public
+rgmp::Pos_::_joint3_type	Pos.h	/^  typedef float _joint3_type;$/;"	t	struct:rgmp::Pos_	access:public
+rgmp::Pos_::_joint4_type	Pos.h	/^  typedef float _joint4_type;$/;"	t	struct:rgmp::Pos_	access:public
+rgmp::Pos_::_joint5_type	Pos.h	/^  typedef float _joint5_type;$/;"	t	struct:rgmp::Pos_	access:public
+rgmp::Pos_::_joint6_type	Pos.h	/^  typedef float _joint6_type;$/;"	t	struct:rgmp::Pos_	access:public
+rgmp::Pos_::joint1	Pos.h	/^  float joint1;$/;"	m	struct:rgmp::Pos_	access:public
+rgmp::Pos_::joint2	Pos.h	/^  float joint2;$/;"	m	struct:rgmp::Pos_	access:public
+rgmp::Pos_::joint3	Pos.h	/^  float joint3;$/;"	m	struct:rgmp::Pos_	access:public
+rgmp::Pos_::joint4	Pos.h	/^  float joint4;$/;"	m	struct:rgmp::Pos_	access:public
+rgmp::Pos_::joint5	Pos.h	/^  float joint5;$/;"	m	struct:rgmp::Pos_	access:public
+rgmp::Pos_::joint6	Pos.h	/^  float joint6;$/;"	m	struct:rgmp::Pos_	access:public
+rgmp::operator <<	Pos.h	/^std::ostream& operator<<(std::ostream& s, const  ::rgmp::Pos_<ContainerAllocator> & v)$/;"	f	namespace:rgmp	signature:(std::ostream& s, const ::rgmp::Pos_<ContainerAllocator> & v)
+ros	Pos.h	/^namespace ros$/;"	n
+ros::message_operations	Pos.h	/^namespace message_operations$/;"	n	namespace:ros
+ros::message_operations::Printer	Pos.h	/^struct Printer< ::rgmp::Pos_<ContainerAllocator> >$/;"	s	namespace:ros::message_operations
+ros::message_operations::Printer::stream	Pos.h	/^  template<typename Stream> static void stream(Stream& s, const std::string& indent, const  ::rgmp::Pos_<ContainerAllocator> & v) $/;"	f	struct:ros::message_operations::Printer	access:public	signature:(Stream& s, const std::string& indent, const ::rgmp::Pos_<ContainerAllocator> & v)
+ros::message_traits	Pos.h	/^namespace message_traits$/;"	n	namespace:ros
+ros::message_traits::DataType	Pos.h	/^struct DataType< ::rgmp::Pos_<ContainerAllocator> > {$/;"	s	namespace:ros::message_traits
+ros::message_traits::DataType::value	Pos.h	/^  static const char* value() $/;"	f	struct:ros::message_traits::DataType	access:public	signature:()
+ros::message_traits::DataType::value	Pos.h	/^  static const char* value(const  ::rgmp::Pos_<ContainerAllocator> &) { return value(); } $/;"	f	struct:ros::message_traits::DataType	access:public	signature:(const ::rgmp::Pos_<ContainerAllocator> &)
+ros::message_traits::Definition	Pos.h	/^struct Definition< ::rgmp::Pos_<ContainerAllocator> > {$/;"	s	namespace:ros::message_traits
+ros::message_traits::Definition::value	Pos.h	/^  static const char* value() $/;"	f	struct:ros::message_traits::Definition	access:public	signature:()
+ros::message_traits::Definition::value	Pos.h	/^  static const char* value(const  ::rgmp::Pos_<ContainerAllocator> &) { return value(); } $/;"	f	struct:ros::message_traits::Definition	access:public	signature:(const ::rgmp::Pos_<ContainerAllocator> &)
+ros::message_traits::IsFixedSize	Pos.h	/^template<class ContainerAllocator> struct IsFixedSize< ::rgmp::Pos_<ContainerAllocator> > : public TrueType {};$/;"	s	namespace:ros::message_traits	inherits:TrueType
+ros::message_traits::IsMessage	Pos.h	/^template<class ContainerAllocator> struct IsMessage< ::rgmp::Pos_<ContainerAllocator>  const> : public TrueType {};$/;"	s	namespace:ros::message_traits	inherits:TrueType
+ros::message_traits::IsMessage	Pos.h	/^template<class ContainerAllocator> struct IsMessage< ::rgmp::Pos_<ContainerAllocator> > : public TrueType {};$/;"	s	namespace:ros::message_traits	inherits:TrueType
+ros::message_traits::MD5Sum	Pos.h	/^struct MD5Sum< ::rgmp::Pos_<ContainerAllocator> > {$/;"	s	namespace:ros::message_traits
+ros::message_traits::MD5Sum::static_value1	Pos.h	/^  static const uint64_t static_value1 = 0xb0068422b386ec86ULL;$/;"	m	struct:ros::message_traits::MD5Sum	access:public
+ros::message_traits::MD5Sum::static_value2	Pos.h	/^  static const uint64_t static_value2 = 0x08fa05052ffe139fULL;$/;"	m	struct:ros::message_traits::MD5Sum	access:public
+ros::message_traits::MD5Sum::value	Pos.h	/^  static const char* value() $/;"	f	struct:ros::message_traits::MD5Sum	access:public	signature:()
+ros::message_traits::MD5Sum::value	Pos.h	/^  static const char* value(const  ::rgmp::Pos_<ContainerAllocator> &) { return value(); } $/;"	f	struct:ros::message_traits::MD5Sum	access:public	signature:(const ::rgmp::Pos_<ContainerAllocator> &)
+ros::serialization	Pos.h	/^namespace serialization$/;"	n	namespace:ros
+ros::serialization::Serializer	Pos.h	/^template<class ContainerAllocator> struct Serializer< ::rgmp::Pos_<ContainerAllocator> >$/;"	s	namespace:ros::serialization
+ros::serialization::Serializer::ROS_DECLARE_ALLINONE_SERIALIZER	Pos.h	/^  ROS_DECLARE_ALLINONE_SERIALIZER;$/;"	m	struct:ros::serialization::Serializer	access:public
+ros::serialization::Serializer::allInOne	Pos.h	/^  template<typename Stream, typename T> inline static void allInOne(Stream& stream, T m)$/;"	f	struct:ros::serialization::Serializer	access:public	signature:(Stream& stream, T m)
+serialization	Pos.h	/^namespace serialization$/;"	n	namespace:ros
+static_value1	Pos.h	/^  static const uint64_t static_value1 = 0xb0068422b386ec86ULL;$/;"	m	struct:ros::message_traits::MD5Sum	access:public
+static_value2	Pos.h	/^  static const uint64_t static_value2 = 0x08fa05052ffe139fULL;$/;"	m	struct:ros::message_traits::MD5Sum	access:public
+stream	Pos.h	/^  template<typename Stream> static void stream(Stream& s, const std::string& indent, const  ::rgmp::Pos_<ContainerAllocator> & v) $/;"	f	struct:ros::message_operations::Printer	access:public	signature:(Stream& s, const std::string& indent, const ::rgmp::Pos_<ContainerAllocator> & v)
+value	Pos.h	/^  static const char* value() $/;"	f	struct:ros::message_traits::DataType	access:public	signature:()
+value	Pos.h	/^  static const char* value() $/;"	f	struct:ros::message_traits::Definition	access:public	signature:()
+value	Pos.h	/^  static const char* value() $/;"	f	struct:ros::message_traits::MD5Sum	access:public	signature:()
+value	Pos.h	/^  static const char* value(const  ::rgmp::Pos_<ContainerAllocator> &) { return value(); } $/;"	f	struct:ros::message_traits::DataType	access:public	signature:(const ::rgmp::Pos_<ContainerAllocator> &)
+value	Pos.h	/^  static const char* value(const  ::rgmp::Pos_<ContainerAllocator> &) { return value(); } $/;"	f	struct:ros::message_traits::Definition	access:public	signature:(const ::rgmp::Pos_<ContainerAllocator> &)
+value	Pos.h	/^  static const char* value(const  ::rgmp::Pos_<ContainerAllocator> &) { return value(); } $/;"	f	struct:ros::message_traits::MD5Sum	access:public	signature:(const ::rgmp::Pos_<ContainerAllocator> &)
