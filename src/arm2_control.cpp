@@ -14,7 +14,7 @@
 using namespace boost;
 
 //now we use ROBOT DOUBLE ARM so free state is 2
-#define ROBOT_DOF 2
+#define ROBOT_DOF 6
 
 #define ROBOT_LEFT_ARM_DOF 	6
 #define ROBOT_RIGHT_ARM_DOF 6
@@ -59,17 +59,18 @@ using namespace boost;
 #define ROBOT_HEAD_2_POS_MAX 	    750	
 #define ROBOT_HEAD_2_POS_MIN 		200
 
-#define ROBOT_HEAD_SERVO1_NAME      "head 1 servo"
-#define ROBOT_HEAD_SERVO2_NAME      "head 1 servo"
-#define ROBOT_LEFT_CLAW_NAME        "left claw"
-#define ROBOT_RIGHT_CLAW_NAME       "right claw"
+#define ROBOT_HEAD_SERVO1_NAME      "head_1_servo"
+#define ROBOT_HEAD_SERVO2_NAME      "head_2_servo"
+#define ROBOT_LEFT_CLAW_NAME        "left_claw"
+#define ROBOT_RIGHT_CLAW_NAME       "right_claw"
+#define ROBOT_LEFT_ARM_NAME         "left_joint"
+#define ROBOT_RIGHT_ARM_NAME        "right_joint"
 
 rgmp::Arm_joint left_msg_pos;
 rgmp::Arm_joint right_msg_pos;
 rgmp::Arm_joint left_pos_buf[POSBUFLENGTH];
 rgmp::Arm_joint right_pos_buf[POSBUFLENGTH];
-rgmp::Robotcontrol robot_control_msg; 
-rgmp::Robotcontrol robot_can_msg; 
+rgmp::Robotcontrol robot_control_msg; rgmp::Robotcontrol robot_can_msg; 
 rgmp::Robotcontrol robot_teach_msg[ROBOT_DOF]; //robot_teach_msg 0 is the left_ARM 1 is the right ARM 
 
 ros::Publisher robot_can_msg_pub;
@@ -98,6 +99,16 @@ bool check_pos(int arm);
 void fill_robot_msg(int msg);
 void send_robot_pos();     //send robot pos to the robot teach node
 void servo_control_function();
+bool check_msg_equ(const rgmp::Robotcontrol& a, const rgmp::Robotcontrol& b);
+
+bool check_msg_equ(const rgmp::Robotcontrol& a, const rgmp::Robotcontrol& b){
+	int i;
+	for(i=0; i<a.length; i++){
+		if(a.data[i]!=b.data[i])		
+			return false;
+	}
+	return true;
+}
 
 void fill_robot_msg(int msg){
 	int i;
@@ -137,7 +148,7 @@ void fill_robot_msg(int msg){
 			break;
 		case ROBOT_LEFT_ARM_MSG:
 			robot_can_msg.cmd = msg;
-			robot_can_msg.name = left_msg_pos.name;
+			robot_can_msg.name = ROBOT_LEFT_ARM_NAME;
 			robot_can_msg.length = ROBOT_LEFT_ARM_DOF;
 			robot_can_msg.data.resize(robot_can_msg.length);
 			robot_can_msg.header.stamp = ros::Time().now();
@@ -146,7 +157,7 @@ void fill_robot_msg(int msg){
 			break;
 		case ROBOT_RIGHT_ARM_MSG:
 			robot_can_msg.cmd = msg;
-			robot_can_msg.name = right_msg_pos.name;
+			robot_can_msg.name = ROBOT_RIGHT_ARM_NAME;
 			robot_can_msg.length = ROBOT_RIGHT_ARM_DOF;
 			robot_can_msg.data.resize(robot_can_msg.length);
 			robot_can_msg.header.stamp = ros::Time().now();
@@ -161,6 +172,7 @@ void fill_robot_msg(int msg){
 
 
 void teachCallback(const rgmp::Robotcontrol::ConstPtr& teachmsg){
+	int i;
 	switch(teachmsg->cmd)
 	{
 		case RPY_ROBOT_TEACH_BEGIN:
@@ -180,11 +192,41 @@ void teachCallback(const rgmp::Robotcontrol::ConstPtr& teachmsg){
 			ROS_INFO("rgmp node enter the robot run state!");
 			break;
 		case RPY_ROBOT_READ_POINT:
+				robot_can_msg.name = teachmsg->name;
+				robot_can_msg.length = teachmsg->length;
+				robot_can_msg.data.resize(robot_can_msg.length);
+				robot_can_msg.header.stamp = ros::Time().now();
+				robot_can_msg.header.seq = teachmsg->header.seq;
+				for(i=0 ; i<teachmsg->length; i++)
+					robot_can_msg.data[i] = teachmsg->data[i];
+			if(teachmsg->name == ROBOT_LEFT_ARM_NAME){
+				robot_can_msg.cmd = ROBOT_LEFT_ARM_MSG;
+				robot_can_msg_pub.publish(robot_can_msg);
+				ROS_INFO("send the left arm message");
+			}else if(teachmsg->name == ROBOT_RIGHT_ARM_NAME){
+				robot_can_msg.cmd = ROBOT_RIGHT_ARM_MSG;
+				robot_can_msg_pub.publish(robot_can_msg);
+				ROS_INFO("send the right arm message");
+			}else if(teachmsg->name == ROBOT_HEAD_SERVO1_NAME){
+				robot_can_msg.cmd = ROBOT_HEAD_1_MSG;
+				robot_can_msg_pub.publish(robot_can_msg);
+				ROS_INFO("send the robot head servo 1 msg");
+			}else if(teachmsg->name == ROBOT_HEAD_SERVO2_NAME){
+				robot_can_msg.cmd = ROBOT_HEAD_2_MSG;
+				robot_can_msg_pub.publish(robot_can_msg);
+				ROS_INFO("send the robot head servo 2 msg");
+			}else if(teachmsg->name == ROBOT_LEFT_CLAW_NAME){
+				robot_can_msg.cmd = ROBOT_LEFT_CLAW_MSG;
+				robot_can_msg_pub.publish(robot_can_msg);
+				ROS_INFO("send the robot left claw msg");
+			}else if(teachmsg->name == ROBOT_RIGHT_CLAW_NAME){
+				robot_can_msg.cmd = ROBOT_RIGHT_CLAW_MSG;
+				robot_can_msg_pub.publish(robot_can_msg);
+				ROS_INFO("send the robot right claw msg");
+			}
 			//TODO: send the mssage to the real robot
-			ROS_INFO("send the message");
 			break;
 		case RPY_ROBOT_RUN_END:
-			fill_robot_msg(ROBOT_RIGHT_CLAW_MSG);
 			robot_state = ROBOT_FREE_STATE;
 			ROS_INFO("rgmp node end run mode and enter the free state!");
 			break;
@@ -266,8 +308,8 @@ void jointCallback(const sensor_msgs::JointState::ConstPtr& msg)
     right_pos_buf[count].name = trim_right_copy_if(msg->name[7],is_digit());	
     //set the joint data size
     //set the ROS_INFO
-	//ROS_INFO("I hread: [%s]",left_pos_buf[count].name.c_str());
-	//ROS_INFO("I hread: [%s]",right_pos_buf[count].name.c_str());
+	//ROS_INFO("I hread: left pos buf[%s]",left_pos_buf[count].name.c_str());
+	//ROS_INFO("I hread: right pos buf[%s]",right_pos_buf[count].name.c_str());
 
 	//put the leftjoint message in to the pos buffer
 	for(i=0;i<6;i++){
@@ -300,7 +342,7 @@ int main(int argc, char **argv){
     robot_can_msg_pub = n.advertise<rgmp::Robotcontrol>("robot_can_msg",10);
 	ros::Subscriber sub = n.subscribe("joint_states",1, jointCallback);
 	ros::Subscriber sub_joy_dev = n.subscribe("joy",1,joyCallback);
-	ros::Subscriber sub_teach_node = n.subscribe("robot_teach_rpy",1,teachCallback);
+	ros::Subscriber sub_teach_node = n.subscribe("robot_teach_rpy",1000,teachCallback);
 
 //init the left and rigth arm joints pos buf	
 	int i;
@@ -329,19 +371,11 @@ int main(int argc, char **argv){
 			robot_control_msg.header.seq++;
 			robot_control_msg_flag = false;
 		}
-     //   if(check_pos(LEFT_ARM)){
-	//		chatter_pub.publish(left_msg_pos);
-	//		ros::spinOnce();
-	//	}
-     //   if(check_pos(RIGHT_ARM)){
-	//		chatter_pub.publish(right_msg_pos);
-	//		ros::spinOnce();
-	//	}
 		if(robot_teach_msg_flag){
-			robot_control_pub.publish(robot_teach_msg[0]);
-//			ros::spinOnce();
-			robot_control_pub.publish(robot_teach_msg[1]); 
-			ros::spinOnce(); 
+			for(i=0;i<ROBOT_DOF; i++){
+			robot_control_pub.publish(robot_teach_msg[i]);
+			usleep(50000);
+			}
 			robot_teach_msg_flag=false; }
 		ros::spinOnce();
 	//	usleep(5000);
@@ -351,9 +385,10 @@ int main(int argc, char **argv){
 
 bool check_pos(int arm){
 	int i,j;
+	rgmp::Arm_joint pos_temp;
     
 	if(arm == LEFT_ARM){
-		rgmp::Arm_joint pos_temp = left_pos_buf[0];
+		pos_temp = left_pos_buf[0];
 		for(i=1;i<POSBUFLENGTH;i++){
 			for(j=0;j<6;j++){
 				if(pos_temp.joint_data[j] != left_pos_buf[i].joint_data[j]){
@@ -364,8 +399,8 @@ bool check_pos(int arm){
 		left_msg_pos = pos_temp;
 		return true;	
 	}
-	if(arm == RIGHT_ARM){
-		rgmp::Arm_joint pos_temp = right_pos_buf[0];
+	else if(arm == RIGHT_ARM){
+		pos_temp = right_pos_buf[0];
 		for(i=1;i<POSBUFLENGTH;i++){
 			for(j=0;j<6;j++){
 				if(pos_temp.joint_data[j] != right_pos_buf[i].joint_data[j]){
@@ -385,10 +420,10 @@ bool check_pos(int arm){
 void send_robot_pos(){
 	int i;
 
-    if(check_pos(LEFT_ARM)==false && check_pos(RIGHT_ARM)==false){
+   /*if(check_pos(LEFT_ARM)==false || check_pos(RIGHT_ARM)==false){
 		ROS_INFO("Error point can't be added!");
 		return;
-	}
+	}*/
 	ROS_INFO("I hread: left arm[%s]",left_msg_pos.name.c_str());
 	ROS_INFO("I hread: right arm[%s]",right_msg_pos.name.c_str());
 		 
@@ -396,7 +431,7 @@ void send_robot_pos(){
 	robot_state = ROBOT_WRBUSY_STATE;
     //step2 fill the left_msg_pos
 	robot_teach_msg[0].cmd = CMD_ROBOT_ADD_POINT;
-	robot_teach_msg[0].name = left_msg_pos.name;
+	robot_teach_msg[0].name = ROBOT_LEFT_ARM_NAME;
 	robot_teach_msg[0].header.seq = addpointID;
     robot_teach_msg[0].header.stamp = ros::Time().now();
 	robot_teach_msg[0].length = ROBOT_LEFT_ARM_DOF;
@@ -406,7 +441,7 @@ void send_robot_pos(){
 	
 	//step3 fill the right_msg_pos
 	robot_teach_msg[1].cmd = CMD_ROBOT_ADD_POINT;
-	robot_teach_msg[1].name = right_msg_pos.name;
+	robot_teach_msg[1].name = ROBOT_RIGHT_ARM_NAME;
 	robot_teach_msg[1].header.seq = addpointID;
     robot_teach_msg[1].header.stamp = ros::Time().now();
 	robot_teach_msg[1].length = ROBOT_RIGHT_ARM_DOF;
@@ -414,8 +449,43 @@ void send_robot_pos(){
 	for(i=0;i<ROBOT_RIGHT_ARM_DOF;i++)
 		robot_teach_msg[1].data[i] = right_msg_pos.joint_data[i];
 	
-	//TODO:add the other msg about the robot_state
-	//step4 add the addpointID for next pos
+	//step4 fill the head 1_pos
+	robot_teach_msg[2].cmd = CMD_ROBOT_ADD_POINT;
+	robot_teach_msg[2].name = ROBOT_HEAD_SERVO1_NAME;
+	robot_teach_msg[2].header.seq = addpointID;
+    robot_teach_msg[2].header.stamp = ros::Time().now();
+	robot_teach_msg[2].length = 1;
+	robot_teach_msg[2].data.resize(1);
+	robot_teach_msg[2].data[0] = robot_servo_data[ROBOT_HEAD_1_DATA];
+
+	//step5 fill the head 2_pos
+	robot_teach_msg[3].cmd = CMD_ROBOT_ADD_POINT;
+	robot_teach_msg[3].name = ROBOT_HEAD_SERVO2_NAME;
+	robot_teach_msg[3].header.seq = addpointID;
+    robot_teach_msg[3].header.stamp = ros::Time().now();
+	robot_teach_msg[3].length = 1;
+	robot_teach_msg[3].data.resize(1);
+	robot_teach_msg[3].data[0] = robot_servo_data[ROBOT_HEAD_2_DATA];
+
+	//step6 fill the left claw data
+	robot_teach_msg[4].cmd = CMD_ROBOT_ADD_POINT;
+	robot_teach_msg[4].name = ROBOT_LEFT_CLAW_NAME;
+	robot_teach_msg[4].header.seq = addpointID;
+    robot_teach_msg[4].header.stamp = ros::Time().now();
+	robot_teach_msg[4].length = 1;
+	robot_teach_msg[4].data.resize(1);
+	robot_teach_msg[4].data[0] = robot_servo_data[ROBOT_LEFT_CLAW_DATA];
+
+	//step7 fill the right claw data
+	robot_teach_msg[5].cmd = CMD_ROBOT_ADD_POINT;
+	robot_teach_msg[5].name = ROBOT_RIGHT_CLAW_NAME;
+	robot_teach_msg[5].header.seq = addpointID;
+    robot_teach_msg[5].header.stamp = ros::Time().now();
+	robot_teach_msg[5].length = 1;
+	robot_teach_msg[5].data.resize(1);
+	robot_teach_msg[5].data[0] = robot_servo_data[ROBOT_RIGHT_CLAW_DATA];
+
+	//step8 add the addpointID for next pos
 	robot_teach_msg_flag = true;
 	addpointID++;
 }
@@ -428,6 +498,10 @@ void servo_control_function()
 	head_pos_last_data[ROBOT_HEAD_2_DATA] = -1;
 
 	while(ros::ok()){
+		if(robot_state == ROBOT_RUN_STATE){
+			usleep(500000);
+			continue;
+		}
 		if(robot_control_obj == ROBOT_LEFT_ARM && press_button == 12){
 			robot_servo_data[ROBOT_LEFT_CLAW_DATA] += claw_pos*ROBOT_CONTROL_SPEED;   //add the stat about the robot_servo
 			//check the pos
