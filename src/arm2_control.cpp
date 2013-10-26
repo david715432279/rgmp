@@ -70,7 +70,8 @@ rgmp::Arm_joint left_msg_pos;
 rgmp::Arm_joint right_msg_pos;
 rgmp::Arm_joint left_pos_buf[POSBUFLENGTH];
 rgmp::Arm_joint right_pos_buf[POSBUFLENGTH];
-rgmp::Robotcontrol robot_control_msg; rgmp::Robotcontrol robot_can_msg; 
+rgmp::Robotcontrol robot_control_msg; 
+rgmp::Robotcontrol robot_can_msg; 
 rgmp::Robotcontrol robot_teach_msg[ROBOT_DOF]; //robot_teach_msg 0 is the left_ARM 1 is the right ARM 
 
 ros::Publisher robot_can_msg_pub;
@@ -99,12 +100,33 @@ bool check_pos(int arm);
 void fill_robot_msg(int msg);
 void send_robot_pos();     //send robot pos to the robot teach node
 void servo_control_function();
-bool check_msg_equ(const rgmp::Robotcontrol& a, const rgmp::Robotcontrol& b);
+void reset_head_claw();
+bool check_msg_equ(rgmp::Robotcontrol  a, float data[]);
 
-bool check_msg_equ(const rgmp::Robotcontrol& a, const rgmp::Robotcontrol& b){
+void reset_head_claw(){
+	//step1 init the robot_servo_data
+	robot_servo_data[ROBOT_HEAD_1_DATA] = 511;   //the init stat about the robot_servo
+	robot_servo_data[ROBOT_HEAD_2_DATA] = 511;   //the init stat about the robot_servo
+	robot_servo_data[ROBOT_LEFT_CLAW_DATA] = 511;   //the init stat about the robot_servo
+	robot_servo_data[ROBOT_RIGHT_CLAW_DATA] = 511;   //the init stat about the robot_servo
+
+	//step2 send the reset message
+	fill_robot_msg(ROBOT_HEAD_1_MSG);
+	robot_can_msg_pub.publish(robot_can_msg);
+	fill_robot_msg(ROBOT_HEAD_2_MSG);
+	robot_can_msg_pub.publish(robot_can_msg);
+	fill_robot_msg(ROBOT_LEFT_CLAW_MSG);
+	robot_can_msg_pub.publish(robot_can_msg);
+	fill_robot_msg(ROBOT_RIGHT_CLAW_MSG);
+	robot_can_msg_pub.publish(robot_can_msg);
+
+	return;
+}
+
+bool check_msg_equ(rgmp::Robotcontrol a, float data[]){
 	int i;
-	for(i=0; i<a.length; i++){
-		if(a.data[i]!=b.data[i])		
+	for(i=0; i<ROBOT_LEFT_ARM_DOF; i++){
+		if(a.data[i]!=data[i])		
 			return false;
 	}
 	return true;
@@ -116,7 +138,7 @@ void fill_robot_msg(int msg){
 	switch(msg){
 		case ROBOT_HEAD_1_MSG:	
 			robot_can_msg.cmd = msg;
-			robot_can_msg.name = ROBOT_HEAD_SERVO2_NAME;
+			robot_can_msg.name = ROBOT_HEAD_SERVO1_NAME;
 			robot_can_msg.length = 1;
 			robot_can_msg.data.resize(robot_can_msg.length);
 			robot_can_msg.header.stamp = ros::Time().now();
@@ -248,6 +270,11 @@ void joyCallback(const sensor_msgs::Joy::ConstPtr& joymsg){
 		robot_control_obj = ROBOT_MOVE_BUTTON;
 	else if(joymsg->buttons[4]==1) //the button 5 on the joystick clean the target 
 		robot_control_obj = CLEAN_TARGET;
+
+	if(joymsg->buttons[1]==1){
+		//reset the head and claw 	
+		reset_head_claw();
+	}
 
 	//function button
 	if(joymsg->buttons[7]==1 && robot_state == ROBOT_FREE_STATE){
@@ -494,6 +521,15 @@ void servo_control_function()
 {
 	float head_pos_last_data[2];
 
+	float robot_left_last_data[ROBOT_LEFT_ARM_DOF]; 
+	float robot_right_last_data[ROBOT_RIGHT_ARM_DOF]; 
+
+	//chang the init data 
+	robot_left_last_data[0] = 0.11;
+	robot_right_last_data[0] = 0.21;
+
+	int i;
+
 	head_pos_last_data[ROBOT_HEAD_1_DATA] = -1;
 	head_pos_last_data[ROBOT_HEAD_2_DATA] = -1;
 
@@ -578,10 +614,20 @@ void servo_control_function()
 
 		if(robot_control_obj == ROBOT_LEFT_ARM && check_pos(LEFT_ARM)){
 			fill_robot_msg(ROBOT_LEFT_ARM_MSG);
-			robot_can_msg_pub.publish(robot_can_msg);
+			if(!check_msg_equ(robot_can_msg, robot_left_last_data)){
+				robot_can_msg_pub.publish(robot_can_msg);
+				for(i=0; i<ROBOT_LEFT_ARM_DOF; i++){
+					robot_left_last_data[i] = robot_can_msg.data[i];
+				}
+			}
 		}else if(robot_control_obj == ROBOT_RIGHT_ARM && check_pos(RIGHT_ARM)){
 			fill_robot_msg(ROBOT_RIGHT_ARM_MSG);
-			robot_can_msg_pub.publish(robot_can_msg);
+			if(!check_msg_equ(robot_can_msg, robot_right_last_data)){
+				robot_can_msg_pub.publish(robot_can_msg);
+				for(i=0; i<ROBOT_RIGHT_ARM_DOF; i++){
+					robot_right_last_data[i] = robot_can_msg.data[i];
+				}
+			}
 		}
 
 		ros::spinOnce();
